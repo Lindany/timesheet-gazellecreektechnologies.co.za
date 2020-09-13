@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <style>
     body {
         color: #566787;
@@ -179,6 +180,22 @@ $(document).ready(function(){
 	$('[data-toggle="tooltip"]').tooltip();
 });
 </script>
+<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+     apiKey: "AIzaSyCYPLnNcHrZEb4PZFAZFS8ai28AMG_bl6A",
+    authDomain: "access-control-91beb.firebaseapp.com",
+    databaseURL: "https://access-control-91beb.firebaseio.com",
+    projectId: "access-control-91beb",
+    storageBucket: "access-control-91beb.appspot.com",
+    messagingSenderId: "767589913498",
+    appId: "1:767589913498:web:dc344eb05ce6ac49b86023",
+    measurementId: "G-D61SN32DQS"
+  };
+  firebase.initializeApp(config);
+</script>
+
 </head>
 <body>
 <div class="container">
@@ -200,7 +217,7 @@ $(document).ready(function(){
                     </div>
                 </div>
             </div>
-            <table class="table table-striped table-hover">
+            <table class="table table-striped table-hover"  id="ex-table">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -214,77 +231,44 @@ $(document).ready(function(){
                 </thead>
         
                 <tbody >
-
-
-                          <!--   <tr>
-                                <td><?php echo $row['id'] ?></td>
-                                <td><a href="#"><img src="https://drive.google.com/uc?id=19bKfM1etHMKhqeIHOd3HZccys1C8Rx19" widt="35px" height="35px" class="avatar" alt="Avatar"> <?php echo $row['name'] ?></a></td>
-                                <td><?php echo $row['email'] ?></td>
-                                <td><?php echo $row['role'] ?></td>                     
-                                <td><?php echo $row['totaltime'] ?></td>
-                                <td><span class="status text-success">&bull;</span> Active</td>
-                                <td>
-                                    <a href="#" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a>
-                                    <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
-                                </td>
-                            </tr> -->
-                     <tr>
-                        <td>2</td>
-                        <td><a href="#"><img src="https://drive.google.com/uc?id=19bKfM1etHMKhqeIHOd3HZccys1C8Rx19" widt="35px" height="35px" class="avatar" alt="Avatar"> Paula Wilson</a></td>
-                        <td>thomashardy@mail.com</td>
-                        <td>Publisher</td>
-                        <td>0</td>
-                        <td><span class="status text-success">&bull;</span> Active</td>
-                        <td>
-                            <a href="#" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a>
-                            <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
-                        </td>
-                    </tr>
-                  <!--  <tr>
-                        <td>3</td>
-                        <td><a href="#"><img src="https://drive.google.com/uc?id=19bKfM1etHMKhqeIHOd3HZccys1C8Rx19" widt="35px" height="35px" class="avatar" alt="Avatar"> Antonio Moreno</a></td>
-                        <td>dominiqueperrier@mail.com</td>
-                        <td>Publisher</td>
-                        <td>0</td>
-                        <td><span class="status text-danger">&bull;</span> Suspended</td>                        
-                        <td>
-                            <a href="#" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a>
-                            <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
-                        </td>                        
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td><a href="#"><img src="https://drive.google.com/uc?id=19bKfM1etHMKhqeIHOd3HZccys1C8Rx19" widt="35px" height="35px" class="avatar" alt="Avatar"> Mary Saveley</a></td>
-                        <td>mariaanders@mail.com</td>
-                        <td>Reviewer</td>
-                        <td>0</td>
-                        <td><span class="status text-success">&bull;</span> Active</td>
-                        <td>
-                            <a href="#" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a>
-                            <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td><a href="#"><img src="https://drive.google.com/uc?id=19bKfM1etHMKhqeIHOd3HZccys1C8Rx19" widt="35px" height="35px" class="avatar" alt="Avatar"> Martin Sommer</a></td>
-                        <td>franwilson@mail.com</td>
-                        <td>Moderator</td>
-                        <td>0</td>                        
-                        <td><span class="status text-warning">&bull;</span> Inactive</td>
-                        <td>
-                            <a href="#" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a>
-                            <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
-                        </td>
-                    </tr> -->
+                    <script>
+                        var database = firebase.database();
+                        database.ref('access-control-91beb/access-control').once('value', function(snapshot){
+                            if(snapshot.exists()){
+                                var content = '';
+                                var index = 1;
+                                snapshot.forEach(function(data){
+                                    
+                                    var val = data.val();
+                                        content +='<tr>';
+                                        content += '<td>'+index+'</td>';
+                                        content += '<td><a href="#"><img src="https://drive.google.com/uc?id=19bKfM1etHMKhqeIHOd3HZccys1C8Rx19" widt="35px" height="35px" class="avatar" alt="Avatar"> '+ val.Name +' '+ val.Surname+'</a></td>';
+                                       
+                                        content += '<td>' +  val.Email + '</td>';
+                                        content += '<td>' +  val.Role + '</td>';
+                                        content += '<td>' +  (val.TotalTime / 1) + '</td>';
+                                        content = (val.State== 1) ? content +=  '<td><span class="status text-success">&bull;</span> Active</td>'
+                                                                :
+                                        content +=  '<td><span class="status text-danger">&bull;</span> Inactive</td>'
+                                        content += ' <td>'+
+                                                    '<a href="#" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a>'+
+                                                    '<a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>'+
+                                                '</td>';
+                                    index+=1;
+                                });
+                                $('#ex-table').append(content);
+                            }
+                        });
+                    </script>
                 </tbody>
             </table>
             <div class="clearfix">
                 <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
                 <ul class="pagination">
                     <li class="page-item disabled"><a href="#">Previous</a></li>
-                    <li class="page-item"><a href="#" class="page-link">1</a></li>
+                    <li class="page-item active"><a href="#" class="page-link">1</a></li>
                     <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item active"><a href="#" class="page-link">3</a></li>
+                    <li class="page-item "><a href="#" class="page-link">3</a></li>
                     <li class="page-item"><a href="#" class="page-link">4</a></li>
                     <li class="page-item"><a href="#" class="page-link">5</a></li>
                     <li class="page-item"><a href="#" class="page-link">Next</a></li>
